@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.Administration;
 using PromoCodeFactory.WebHost.Models;
+using PromoCodeFactory.WebHost.Models.Response;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -14,62 +18,108 @@ namespace PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class EmployeesController
-        : ControllerBase
+    public class EmployeesController(IRepository<Employee, Guid> employeeRepository, IRepository<Role, Guid> roleRepository, IMapper mapper) : ControllerBase
     {
-        private readonly IRepository<Employee> _employeeRepository;
-
-        public EmployeesController(IRepository<Employee> employeeRepository)
-        {
-            _employeeRepository = employeeRepository;
-        }
-
         /// <summary>
+        /// Get the data of all employees
         /// Получить данные всех сотрудников
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
+        [ProducesResponseType(typeof(IEnumerable<EmployeeShortResponse>), 200)]
+        public async Task<IEnumerable<EmployeeShortResponse>> GetEmployeesAsync() =>
+            (await emploeeRepository.GetAllAsync()).Select(mapper.Map<EmployeeShortResponse>);
+        //private readonly IRepository<Employee> _employeeRepository;
+
+        //public EmployeesController(IRepository<Employee> employeeRepository)
+        //{
+        //    _employeeRepository = employeeRepository;
+        //}        
+
+        //public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
+        //{
+        //    var employees = await _employeeRepository.GetAllAsync();
+
+        //    var employeesModelList = employees.Select(x =>
+        //        new EmployeeShortResponse()
+        //        {
+        //            Id = x.Id,
+        //            Email = x.Email,
+        //            FullName = x.FullName,
+        //        }).ToList();
+
+        //    return employeesModelList;
+        /// <summary>
+        /// Get the employee data by Id
+        /// Получить данные сотрудника по id
+        /// </summary>
+        /// <returns></returns> 
+
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(EmployeeResponse), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<EmployeeResponse>> Get(Guid id)
         {
-            var employees = await _employeeRepository.GetAllAsync();
+            var employee = await emploeeRepository.GetByIdAsync(id);
 
-            var employeesModelList = employees.Select(x =>
-                new EmployeeShortResponse()
-                {
-                    Id = x.Id,
-                    Email = x.Email,
-                    FullName = x.FullName,
-                }).ToList();
+            if (employee == null) 
+                return NotFound();
+            var employeeModel = mapper.Map<EmployeeResponse>(employee);
+            return employeeModel;
+        }
+        /// <summary>
+        /// Add a new employee specifying the role
+        /// Добавить нового сотрудника, с указанием роли.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>  
+        [HttpPost]
+        [ProducesResponseType(typeof(EmployeeResponse), 201)]
+        [ProducesResponseType(400)]       
+        public async Task<ActionResult<EmployeeResponse>> CreateEmployeeAsynce([FromBody] CreateOrEditEmployeeRequest request)
+        {
+            if (string.IsNullOrEmpty(request.NamesRole)) return BadRequest("Roles is Empty");
+            var role = (await roleRepository.GetAllAsync()).FirstOrDefault(r => r.Name == request.NamesRole);
+            if (role == null) return NotFound("Role not Found");
 
-            return employeesModelList;
+            var employee = mapper.Map<Employee>(request);
+            employee.id = Guid.NewGuid();
+            employee.Role = role;
+            var response = await employeeRepository.CreateAsync(employee);
+            return CreatedAtAction(nameof(Get), new { id = response.id }, mapper.Map<EmployeeResponse>(response));
         }
 
         /// <summary>
-        /// Получить данные сотрудника по id
+        /// Update the employee date by Id 
+        /// Обновить данные сотрудника по Id.
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<EmployeeResponse>> GetEmployeeByIdAsync(Guid id)
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<bool>> UpdateEmloyeeAsync(Guid id, [FromBody] CreateOrEditEmployeeRequest request)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var oldEmployee = await emploeeRepository.GetByIdAsync(id);
+            if (oldEmployee == null) return NotFound("Employee id not found");
 
-            if (employee == null)
-                return NotFound();
-
-            var employeeModel = new EmployeeResponse()
+            var roles = (await roleRepository.GetAllAsync()).Where(r => request.NameRole.Contains(r.Name));
+            updateEmployee.Id = id;
+            if (!string.IsNullOrEmpty(request.NamesRole)) updateEmployee.Role = oldEmploqyee.Role;
+            else
             {
-                Id = employee.Id,
-                Email = employee.Email,
-                Role = new RoleItemResponse()
-                {
-                    Name = employee.Role.Name,
-                    Description = employee.Role.Description
-                },
-                FullName = employee.FullName,
-                AppliedPromocodesCount = employee.AppliedPromocodesCount
-            };
+                var roles = (await roleRepository.GetAllAsync()).Where(r => request.NamesRole.Contains(r.Name));
+                updateEmployee.Role = roles.First();
+            }
 
-            return employeeModel;
+            await employeeRepository.UpdateAsync(id, updateEmployee);
+            return Ok(true);
         }
+
+
     }
+
 }
