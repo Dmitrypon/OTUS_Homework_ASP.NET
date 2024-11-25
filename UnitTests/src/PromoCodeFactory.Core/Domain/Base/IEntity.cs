@@ -11,4 +11,4 @@ namespace PromoCodeFactory.Core.Domain.Base
         TId Id { get; }
     }
 }
-}
+

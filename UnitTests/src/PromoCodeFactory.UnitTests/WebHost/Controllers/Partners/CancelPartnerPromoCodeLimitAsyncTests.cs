@@ -9,6 +9,10 @@ using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using PromoCodeFactory.WebHost.Controllers;
 using Xunit;
+using AutoFixture;
+using AutoFixture.AutoMoq;
+using AutoFixture.Xunit2;
+using PromoCodeFactory.WebHost.Helpers;
 
 namespace PromoCodeFactory.UnitTests.WebHost.Controllers.Partners
 {
