@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.Administration;
-using PromoCodeFactory.WebHost.Models;
+using PromoCodeFactory.WebHost.Models.Responses;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -14,7 +14,7 @@ namespace PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class EmployeesController
+    public class EmployeesController 
         : ControllerBase
     {
         private readonly IRepository<Employee> _employeeRepository;

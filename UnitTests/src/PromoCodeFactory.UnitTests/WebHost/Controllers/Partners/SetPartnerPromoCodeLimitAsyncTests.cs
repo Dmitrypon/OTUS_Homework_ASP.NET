@@ -8,13 +8,15 @@ using PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using PromoCodeFactory.UnitTests;
 using PromoCodeFactory.WebHost.Controllers;
 using PromoCodeFactory.WebHost;
-using PromoCodeFactory.WebHost.Models.;
+using PromoCodeFactory.WebHost.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using AutoMapper;
+using AutoFixture.Xunit2;
 
 namespace PromoCodeFactory.UnitTests.WebHost.Controllers.Partners
 {
