@@ -7,7 +7,7 @@ using PromoCodeFactory.Core.Domain.Base;
 namespace PromoCodeFactory.Core.Abstractions.Repositories
 {
     public interface IRepository<TEntity, in TId>
-         where TEntity : IEntity<TId>
+         where TEntity : TEntity<TId>
          where TId : struct
     {
         Task<IEnumerable<TEntity>> GetAllAsync();

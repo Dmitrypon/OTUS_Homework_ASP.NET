@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.PromoCodeManagement;
-using PromoCodeFactory.WebHost.Models;
+using PromoCodeFactory.WebHost.Models.Responses;
+using PromoCodeFactory.WebHost.Models.Requests;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -14,20 +15,17 @@ namespace PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class PartnersController
-        : ControllerBase
+    public class PartnersController(IPartnerRepository partnersRepository) : ControllerBase
     {
-        private readonly IRepository<Partner> _partnersRepository;
-
-        public PartnersController(IRepository<Partner> partnersRepository)
-        {
-            _partnersRepository = partnersRepository;
-        }
-
+        /// <summary>
+        /// Список партнеров
+        /// List of partners
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<PartnerResponse>>> GetPartnersAsync()
         {
-            var partners = await _partnersRepository.GetAllAsync();
+            var partners = await partnersRepository.GetAllAsync();
 
             var response = partners.Select(x => new PartnerResponse()
             {
@@ -49,11 +47,18 @@ namespace PromoCodeFactory.WebHost.Controllers
 
             return Ok(response);
         }
-        
+        /// <summary>
+        /// Получить партнерский лимит
+        /// Get an partner limit
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="limitId"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}/limits/{limitId}")]
         public async Task<ActionResult<PartnerPromoCodeLimit>> GetPartnerLimitAsync(Guid id, Guid limitId)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
 
             if (partner == null)
                 return NotFound();
@@ -73,11 +78,18 @@ namespace PromoCodeFactory.WebHost.Controllers
             
             return Ok(response);
         }
-        
+        /// <summary>
+        /// Установить партнерские лимиты промокодов
+        /// Set partners promo code limits
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+
         [HttpPost("{id}/limits")]
         public async Task<IActionResult> SetPartnerPromoCodeLimitAsync(Guid id, SetPartnerPromoCodeLimitRequest request)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
 
             if (partner == null)
                 return NotFound();
@@ -115,15 +127,21 @@ namespace PromoCodeFactory.WebHost.Controllers
             
             partner.PartnerLimits.Add(newLimit);
 
-            await _partnersRepository.UpdateAsync(partner);
+            await partnersRepository.UpdateAsync(id,partner);
             
             return CreatedAtAction(nameof(GetPartnerLimitAsync), new {id = partner.Id, limitId = newLimit.Id}, null);
         }
-        
+        /// <summary>
+        /// Отменить лимит промо кода партнера
+        /// Cancel the partner's promo code limit
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpPost("{id}/canceledLimits")]
         public async Task<IActionResult> CancelPartnerPromoCodeLimitAsync(Guid id)
         {
-            var partner = await _partnersRepository.GetByIdAsync(id);
+            var partner = await partnersRepository.GetByIdAsync(id);
             
             if (partner == null)
                 return NotFound();
@@ -141,7 +159,7 @@ namespace PromoCodeFactory.WebHost.Controllers
                 activeLimit.CancelDate = DateTime.Now;
             }
 
-            await _partnersRepository.UpdateAsync(partner);
+            await partnersRepository.UpdateAsync(id, partner);
 
             return NoContent();
         }

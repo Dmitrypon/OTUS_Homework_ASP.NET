@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PromoCodeFactory.Core.Domain.Base
 {
-    public interface IEntity<out TId> where TId : struct
+    public interface TEntity<out TId> where TId : struct
     {
         TId Id { get; }
     }

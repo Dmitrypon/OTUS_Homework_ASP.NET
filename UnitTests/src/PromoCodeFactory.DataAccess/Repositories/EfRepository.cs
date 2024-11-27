@@ -10,7 +10,7 @@ using PromoCodeFactory.Core.Domain.Base;
 namespace PromoCodeFactory.DataAccess.Repositories
 {
     public class EFRepository<TEntity, TId> : IRepository<TEntity, TId>
-        where TEntity : class, IEntity<TId>
+        where TEntity : class, TEntity<TId>
         where TId : struct
     {
         private readonly DataContext _context;
