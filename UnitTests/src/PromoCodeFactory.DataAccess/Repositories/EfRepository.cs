@@ -5,56 +5,47 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
+using PromoCodeFactory.Core.Domain.Base;
 
 namespace PromoCodeFactory.DataAccess.Repositories
 {
-    public class EfRepository<T>
-        : IRepository<T>
-        where T: BaseEntity
+    public class EFRepository<TEntity, TId> : IRepository<TEntity, TId>
+        where TEntity : class, IEntity<TId>
+        where TId : struct
     {
-        private readonly DataContext _dataContext;
-
-        public EfRepository(DataContext dataContext)
+        private readonly DataContext _context;
+        public EFRepository(DataContext context)
         {
-            _dataContext = dataContext;
-        }
-        
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            var entities = await _dataContext.Set<T>().ToListAsync();
-
-            return entities;
+            _context = context;
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var entity = await _dataContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
-
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
+            return await query.ToListAsync();
+        }
+        public virtual async Task<TEntity> GetByIdAsync(TId id)
+        {
+            return await _context.Set<TEntity>().FindAsync(id).AsTask();
+        }
+        public async Task<TEntity> CreateAsync(TEntity entity)
+        {
+            _context.Add(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
-
-        public async Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids)
+        public async Task UpdateAsync(TId id, TEntity entity)
         {
-            var entities = await _dataContext.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync();
-            return entities;
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
-
-        public async Task AddAsync(T entity)
+        public virtual async Task DeleteAsync(TId id)
         {
-            await _dataContext.Set<T>().AddAsync(entity);
-
-            await _dataContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(T entity)
-        {
-            await _dataContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(T entity)
-        {
-            _dataContext.Set<T>().Remove(entity);
-            await _dataContext.SaveChangesAsync();
+            var entity = await GetByIdAsync(id);
+            if (entity == null) return;
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
         }
     }
+
 }
