@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using PromoCodeFactory.WebHost.Models;
+using PromoCodeFactory.WebHost.Models.Responses;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -14,28 +16,18 @@ namespace PromoCodeFactory.WebHost.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class PreferencesController
+    public class PreferencesController(IRepository<Preference, Guid> preferenceRepository, IMapper mapper)
         : ControllerBase
     {
-        private readonly IRepository<Preference> _preferencesRepository;
-
-        public PreferencesController(IRepository<Preference> preferencesRepository)
-        {
-            _preferencesRepository = preferencesRepository;
-        }
-        
+        /// <summary>
+        /// Получить все предпочтения покупателей
+        /// Get all customer preferences
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<PreferenceResponse>>> GetPreferencesAsync()
-        {
-            var preferences = await _preferencesRepository.GetAllAsync();
-
-            var response = preferences.Select(x => new PreferenceResponse()
-            {
-                Id = x.Id,
-                Name = x.Name
-            }).ToList();
-
-            return Ok(response);
+        [ProducesResponseType(typeof(IEnumerable<PreferenceResponse>), 200)]
+        public async Task<IEnumerable<PreferenceResponse>> GetPreferencesAsync() =>
+            (await preferenceRepository.GetAllAsync()).Select(mapper.Map<PreferenceResponse>);
         }
     }
 }
