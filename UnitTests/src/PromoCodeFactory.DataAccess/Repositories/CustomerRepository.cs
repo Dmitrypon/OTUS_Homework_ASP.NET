@@ -18,7 +18,7 @@ namespace PromoCodeFactory.DataAccess.Repositories
         {
         }
 
-        public override async Task<Customer> GetByIdAcync(Guid id)
+        public override async Task<Customer> GetByIdAsync(Guid id)
         {
             var result = await _context.Set<Customer>().Where(x => x.Id == id).Include(x => x.CustomerPreferences).ThenInclude(x => x.Preference).FirstAsync();
             return result;

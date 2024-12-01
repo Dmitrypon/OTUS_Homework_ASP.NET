@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PromoCodeFactory.Core.Domain;
 using PromoCodeFactory.Core.Domain.Base;
+using PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
 namespace PromoCodeFactory.Core.Abstractions.Repositories
 {
@@ -15,5 +16,6 @@ namespace PromoCodeFactory.Core.Abstractions.Repositories
         Task<TEntity> CreateAsync(TEntity entity);
         Task UpdateAsync(TId id, TEntity entity);
         Task DeleteAsync(TId id);
+        Task<Customer> GetByIdAcync(Guid id);
     }
 }
