@@ -13,7 +13,7 @@ namespace PromoCodeFactory.DataAccess.Repositories
         where TEntity : class, TEntity<TId>
         where TId : struct
     {
-        private readonly DataContext _context;
+        protected readonly DataContext _context;
         public EFRepository(DataContext context)
         {
             _context = context;

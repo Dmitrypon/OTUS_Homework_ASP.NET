@@ -28,27 +28,7 @@ namespace PromoCodeFactory.WebHost.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<EmployeeShortResponse>), 200)]
         public async Task<IEnumerable<EmployeeShortResponse>> GetEmployeesAsync() =>
-            (await emploeeRepository.GetAllAsync()).Select(mapper.Map<EmployeeShortResponse>);
-        //private readonly IRepository<Employee> _employeeRepository;
-
-        //public EmployeesController(IRepository<Employee> employeeRepository)
-        //{
-        //    _employeeRepository = employeeRepository;
-        //}        
-
-        //public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
-        //{
-        //    var employees = await _employeeRepository.GetAllAsync();
-
-        //    var employeesModelList = employees.Select(x =>
-        //        new EmployeeShortResponse()
-        //        {
-        //            Id = x.Id,
-        //            Email = x.Email,
-        //            FullName = x.FullName,
-        //        }).ToList();
-
-        //    return employeesModelList;
+            (await emploeeRepository.GetAllAsync()).Select(mapper.Map<EmployeeShortResponse>);   
         /// <summary>
         /// Get the employee data by Id
         /// Получить данные сотрудника по id

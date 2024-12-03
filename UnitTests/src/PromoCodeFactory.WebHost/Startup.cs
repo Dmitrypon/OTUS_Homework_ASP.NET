@@ -16,6 +16,7 @@ using PromoCodeFactory.DataAccess;
 using PromoCodeFactory.DataAccess.Data;
 using PromoCodeFactory.DataAccess.Repositories;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using PromoCodeFactory.Core.Domain.Base;
 
 namespace PromoCodeFactory.WebHost
 {
@@ -34,7 +35,7 @@ namespace PromoCodeFactory.WebHost
         {
             services.AddControllers().AddMvcOptions(x=> 
                 x.SuppressAsyncSuffixInActionNames = false);
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbInitializer, EfDbInitializer>();
             services.AddDbContext<DataContext>(x =>
             {
