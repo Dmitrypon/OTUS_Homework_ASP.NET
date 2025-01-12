@@ -14,7 +14,7 @@ namespace Pcf.Administration.WebHost.Consumers
         IRepository<Employee> employeeRepository
         , ILogger<NotifyAppliedPromocodeConsumer> logger) : IConsumer<MessageDTO>
     {
-        async Task IConsumer<MessageDto>.Consume(ConsumeContext<MessageDto> context)
+        async Task IConsumer<MessageDTO>.Consume(ConsumeContext<MessageDTO> context)
         {
             var uid = context.Message.Uid;
             var employee = await employeeRepository.GetByIdAsync(uid);
