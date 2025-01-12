@@ -39,14 +39,26 @@ namespace Pcf.ReceivingFromPartner.WebHost
                 c.BaseAddress = new Uri(Configuration["IntegrationSettings:GivingToCustomerApiUrl"]);
             });
 
-            services.AddHttpClient<IAdministrationGateway, AdministrationGateway>(c =>
+            services.AddMassTransit(x =>
             {
-                c.BaseAddress = new Uri(Configuration["IntegrationSettings:AdministrationApiUrl"]);
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(Configuration["IntegrationSettings:RabbitMqHost"], Configuration["IntegrationSettings:RabbitMqVHost"], c =>
+                    {
+
+                        c.Username(Configuration["IntegrationSettings:RabbitMqLogin"]);
+                        c.Password(Configuration["IntegrationSettings:RabbitMqPassword"]);
+                    });
+
+                    cfg.ClearSerialization();
+                    cfg.UseRawJsonSerializer();
+                });
             });
+
+            services.AddTransient<IAdministrationGateway, AdministrationGateway>();
 
             services.AddDbContext<DataContext>(x =>
             {
-                //x.UseSqlite("Filename=PromocodeFactoryReceivingFromPartnerDb.sqlite");
                 x.UseNpgsql(Configuration.GetConnectionString("PromocodeFactoryReceivingFromPartnerDb"));
                 x.UseSnakeCaseNamingConvention();
                 x.UseLazyLoadingProxies();
