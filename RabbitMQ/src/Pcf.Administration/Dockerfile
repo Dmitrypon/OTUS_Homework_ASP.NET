@@ -1,21 +1,29 @@
 # Prepare the build stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 WORKDIR /app
-
-# Copy the solution file and project files, then restore dependencies
-COPY *.sln .
-COPY */*.csproj ./
-RUN for file in $(ls *.csproj); do mkdir -p ${file%.*} && mv $file ${file%.*}; done
-RUN dotnet restore
-
-# Copy the remaining files and publish the application
-COPY . ./aspnetapp
-WORKDIR /app/aspnetapp
-RUN dotnet publish -c Release -o out
-
-# Use the .NET 8 runtime for the final stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-WORKDIR /app
-COPY --from=build /app/aspnetapp/out ./
 EXPOSE 8080
+
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["Pcf.Administration/Pcf.Administration.WebHost/Pcf.Administration.WebHost.csproj", "Pcf.Administration/Pcf.Administration.WebHost/"]
+COPY ["Pcf.Administration/Pcf.Administration.Core/Pcf.Administration.Core.csproj", "Pcf.Administration/Pcf.Administration.Core/"]
+COPY ["Pcf.Administration/Pcf.Administration.DataAccess/Pcf.Administration.DataAccess.csproj", "Pcf.Administration/Pcf.Administration.DataAccess/"]
+COPY ["Pcf.Contracts/Pcf.Contracts.csproj", "Pcf.Contracts"]
+RUN dotnet restore "./Pcf.Administration/Pcf.Administration.WebHost/Pcf.Administration.WebHost.csproj"
+COPY . .
+WORKDIR "/src/Pcf.Administration/Pcf.Administration.WebHost"
+RUN dotnet build "./Pcf.Administration.WebHost.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Pcf.Administration.WebHost.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Pcf.Administration.WebHost.dll"]
