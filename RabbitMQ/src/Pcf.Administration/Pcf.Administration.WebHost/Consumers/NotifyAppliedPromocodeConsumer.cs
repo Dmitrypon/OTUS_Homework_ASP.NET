@@ -1,10 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using Pcf.Administration.Core.Abstractions.Repositories;
-using Pcf.Administration.Core.Domain.Administration;
-using Pcf.Administration.WebHost.Contracts;
-using Pcf.Administration.WebHost.Models;
-using Pcf.Administration.WebHost.Contracts;
+using Pcf.Administration.Core.Domain.Administration; 
 using Pcf.Contracts;
 using System.Threading.Tasks;
 
@@ -12,11 +9,11 @@ namespace Pcf.Administration.WebHost.Consumers
 {
     public class NotifyAppliedPromocodeConsumer(
         IRepository<Employee> employeeRepository
-        , ILogger<NotifyAppliedPromocodeConsumer> logger) : IConsumer<MessageDTO>
+        , ILogger<NotifyAppliedPromocodeConsumer> logger) : IConsumer<PromoCodeMessageDTO>
     {
-        async Task IConsumer<MessageDTO>.Consume(ConsumeContext<MessageDTO> context)
+        async Task IConsumer<PromoCodeMessageDTO>.Consume(ConsumeContext<PromoCodeMessageDTO> context)
         {
-            var uid = context.Message.Uid;
+            var uid = context.Message.Id;
             var employee = await employeeRepository.GetByIdAsync(uid);
 
             if (employee == null)
