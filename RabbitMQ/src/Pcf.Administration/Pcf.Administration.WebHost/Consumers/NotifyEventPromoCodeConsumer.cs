@@ -1,15 +1,16 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using Pcf.Administration.Core.Abstractions.Repositories;
-using Pcf.Administration.Core.Domain.Administration; 
+using Pcf.Administration.Core.Domain.Administration;
+using Pcf.Administration.WebHost.Consumers;
 using Pcf.Contracts;
 using System.Threading.Tasks;
 
 namespace Pcf.Administration.WebHost.Consumers
 {
-    public class NotifyAppliedPromocodeConsumer(
+    public class NotifyEventPromoCodeConsumer(
         IRepository<Employee> employeeRepository
-        , ILogger<NotifyAppliedPromocodeConsumer> logger) : IConsumer<PromoCodeMessageDTO>
+        , ILogger<NotifyEventPromoCodeConsumer> logger) : IConsumer<PromoCodeMessageDTO>
     {
         async Task IConsumer<PromoCodeMessageDTO>.Consume(ConsumeContext<PromoCodeMessageDTO> context)
         {

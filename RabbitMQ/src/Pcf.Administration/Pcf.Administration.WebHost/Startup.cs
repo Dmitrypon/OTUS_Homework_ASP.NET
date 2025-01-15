@@ -10,6 +10,8 @@ using Pcf.Administration.DataAccess.Repositories;
 using Pcf.Administration.DataAccess.Data;
 using Pcf.Administration.Core.Abstractions.Repositories;
 using System;
+using MassTransit;
+using Pcf.Administration.WebHost.Consumers;
 
 namespace Pcf.Administration.WebHost
 {
@@ -36,6 +38,30 @@ namespace Pcf.Administration.WebHost
                 x.UseNpgsql(Configuration.GetConnectionString("PromocodeFactoryAdministrationDb"));
                 x.UseSnakeCaseNamingConvention();
                 x.UseLazyLoadingProxies();
+            });
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<NotifyEventPromoCodeConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(Configuration["IntegrationSettings:RabbitMqHost"], Configuration["IntegrationSettings:RabbitMqVHost"], c =>
+                    {
+
+                        c.Username(Configuration["IntegrationSettings:RabbitMqLogin"]);
+                        c.Password(Configuration["IntegrationSettings:RabbitMqPassword"]);
+                    });
+
+                    cfg.ReceiveEndpoint("NotifyAppliedPromocodeQueue", e =>
+                    {
+                        e.ConfigureConsumer<NotifyEventPromoCodeConsumer>(context);
+                    });
+
+                    cfg.ClearSerialization();
+                    cfg.UseRawJsonSerializer();
+                    cfg.ConfigureEndpoints(context);
+                });
             });
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
