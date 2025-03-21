@@ -7,10 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using PromoCodeFactory.WebHost.Helpers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using PromoCodeFactory.EntityFramework;
 using System;
 using System.IO;
 using System.Reflection;
+using PromoCodeFactory.DataAccess.Data;
+using PromoCodeFactory.EntityFramework;
 
 namespace PromoCodeFactory.WebHost
 {
@@ -57,7 +58,7 @@ namespace PromoCodeFactory.WebHost
             app.UseCors();
             app.UseAuthorization();
             app.MapControllers();
-            app.MigrateDatabase<DataContext>();
+            app.MigrateDatabase<DataContext>();       
 
             app.Run();
         }

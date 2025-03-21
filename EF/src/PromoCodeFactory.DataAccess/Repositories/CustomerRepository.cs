@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PromoCodeFactory.Core.Abstractions.Repositories;
-using PromoCodeFactory.Core.Domain.PromoCodeManagement;
-using PromoCodeFactory.EntityFramework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PromoCodeFactory.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using PromoCodeFactory.Core.Abstractions.Repositories;
+using PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using PromoCodeFactory.DataAccess.Data;
+using System.Collections.Generic;
 
 namespace PromoCodeFactory.DataAccess.Repositories
 { 

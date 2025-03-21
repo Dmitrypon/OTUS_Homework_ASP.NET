@@ -1,8 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain.Administration;
 using PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using PromoCodeFactory.DataAccess.Data;
 using PromoCodeFactory.DataAccess.Repositories;
 
 namespace PromoCodeFactory.WebHost
@@ -18,7 +20,7 @@ namespace PromoCodeFactory.WebHost
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IRepository<Preference, Guid>, EFRepository<Preference, Guid>>();
             services.AddScoped<IRepository<PromoCode, Guid>, EFRepository<PromoCode, Guid>>();
-            services.AddScoped<IRepository<CustomerPreference, Guid>, EFRepository<CustomerPreference, Guid>>();
+            services.AddScoped<IRepository<CustomerPreference, Guid>, EFRepository<CustomerPreference, Guid>>();            
 
             return services;
         }

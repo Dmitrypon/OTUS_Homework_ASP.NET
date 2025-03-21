@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
 using PromoCodeFactory.Core.Domain.Base;
+using PromoCodeFactory.EntityFramework;
 
 namespace PromoCodeFactory.DataAccess.Repositories
 {
@@ -13,11 +14,13 @@ namespace PromoCodeFactory.DataAccess.Repositories
         where TEntity : class, TEntity<TId>
         where TId : struct
     {
-        protected readonly DataContext _context;
-        public EFRepository(DataContext context)
+        protected readonly SQLiteDatabaseContext _context;
+
+        public EFRepository(SQLiteDatabaseContext context)
         {
             _context = context;
         }
+       
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {

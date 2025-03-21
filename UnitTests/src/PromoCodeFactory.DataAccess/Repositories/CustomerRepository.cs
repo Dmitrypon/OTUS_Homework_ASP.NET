@@ -9,12 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SQLitePCL;
+using PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using PromoCodeFactory.EntityFramework;
+
 
 namespace PromoCodeFactory.DataAccess.Repositories
 {
     public class CustomerRepository : EFRepository<Customer, Guid>, ICustomerRepository
     {
-        public CustomerRepository(DataContext context) : base(context) 
+        public CustomerRepository(SQLiteDatabaseContext context) : base(context) 
         {
         }
 

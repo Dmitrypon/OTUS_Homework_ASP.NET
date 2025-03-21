@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PromoCodeFactory.Core.Abstractions.Repositories;
-using PromoCodeFactory.Core.Domain.Base;
-using PromoCodeFactory.EntityFramework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using PromoCodeFactory.EntityFramework;
+using PromoCodeFactory.Core.Abstractions.Repositories;
+using PromoCodeFactory.Core.Domain.Base;
+using PromoCodeFactory.DataAccess.Data;
 
 namespace PromoCodeFactory.DataAccess.Repositories
 {
@@ -18,7 +19,8 @@ namespace PromoCodeFactory.DataAccess.Repositories
         public EFRepository(DataContext context)
         {
             _context = context;
-        }
+        }        
+
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return (await _context.Set<TEntity>().AsNoTracking().ToListAsync()).AsEnumerable();
