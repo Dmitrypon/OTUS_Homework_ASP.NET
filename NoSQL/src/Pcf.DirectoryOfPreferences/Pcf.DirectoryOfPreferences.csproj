@@ -16,4 +16,12 @@
     <Folder Include="Application\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DirectoryOfPreferences.Application.Abstractions\DirectoryOfPreferences.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\DirectoryOfPreferences.Application.Implementations\DirectoryOfPreferences.Application.Implementations.csproj" />
+    <ProjectReference Include="..\DirectoryOfPreferences.Application.Models\DirectoryOfPreferences.Application.Models.csproj" />
+    <ProjectReference Include="..\DirectoryOfPreferences.Domain.Abstractions\DirectoryOfPreferences.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\DirectoryOfPreferences.Infrastructure.EntityFramework\DirectoryOfPreferences.Infrastructure.EntityFramework.csproj" />
+  </ItemGroup>
+
 </Project>
