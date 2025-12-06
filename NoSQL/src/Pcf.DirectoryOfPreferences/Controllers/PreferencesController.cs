@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using DirectoryOfPreferences.Application.Abstractions;
 using DirectoryOfPreferences.Application.Models.Preference;
-using DirectoryOfPreferences.Extentions;
-using DirectoryOfPreferences.Model.Request;
-using DirectoryOfPreferences.Model.Response;
+using Pcf.DirectoryOfPreferences.Extentions;
+using Pcf.DirectoryOfPreferences.Model.Request;
+using Pcf.DirectoryOfPreferences.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Pcf.DirectoryOfPreferences.Extentions;
 using System.Text.Json;
 namespace Pcf.DirectoryOfPreferences.Controllers
 {
