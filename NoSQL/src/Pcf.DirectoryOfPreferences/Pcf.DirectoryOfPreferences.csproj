@@ -22,6 +22,7 @@
     <ProjectReference Include="..\DirectoryOfPreferences.Application.Models\DirectoryOfPreferences.Application.Models.csproj" />
     <ProjectReference Include="..\DirectoryOfPreferences.Domain.Abstractions\DirectoryOfPreferences.Domain.Abstractions.csproj" />
     <ProjectReference Include="..\DirectoryOfPreferences.Infrastructure.EntityFramework\DirectoryOfPreferences.Infrastructure.EntityFramework.csproj" />
+    <ProjectReference Include="..\DirectoryOfPreferences.Infrastructure.Repositories\DirectoryOfPreferences.Infrastructure.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
