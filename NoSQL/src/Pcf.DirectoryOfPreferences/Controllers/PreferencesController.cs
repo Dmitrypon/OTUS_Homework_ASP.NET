@@ -3,15 +3,13 @@ using DirectoryOfPreferences.Application.Abstractions;
 using DirectoryOfPreferences.Application.Models.Preference;
 using Pcf.DirectoryOfPreferences.Extentions;
 using Pcf.DirectoryOfPreferences.Model.Request;
-using Pcf.DirectoryOfPreferences.Model.Response;
+using Pcf.DirectoryOfPreferences.Model.Responce;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Pcf.DirectoryOfPreferences.Extentions;
 using System.Text.Json;
 namespace Pcf.DirectoryOfPreferences.Controllers
-{
-    public class PreferencesController
-    {
+{     
         /// <summary>
         /// Предпочтения клиентов
         /// </summary>
