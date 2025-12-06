@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryOfPreferences.Infrastructure.EntityFramework", "..\DirectoryOfPreferences.Infrastructure.EntityFramework\DirectoryOfPreferences.Infrastructure.EntityFramework.csproj", "{831F271B-7F2F-4755-B4FB-576FC59EE815}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{78E16EC1-2F02-462A-A5E8-C975152594F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0A7BDF9F-1FC5-4265-AE8B-08D522CFC279}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{5A8E0E5F-F0C5-CAF4-7F8D-5D502296ABD6} = {78E16EC1-2F02-462A-A5E8-C975152594F7}
 		{988FF7A6-F4C5-424F-8A1F-5C77D8973A06} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{324561EB-716C-4660-B995-CC728C6140B5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{046639A0-13DE-4773-8BED-48AE29CE0B1A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}

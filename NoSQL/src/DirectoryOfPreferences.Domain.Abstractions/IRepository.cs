@@ -2,7 +2,7 @@
 
 namespace DirectoryOfPreferences.Domain.Abstractions
 {
-    public class IRepository<TEntity, TId> where TEntity : Entity<TId> where TId : struct
+    public interface IRepository<TEntity, TId> where TEntity : Entity<TId> where TId : struct
     {
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<TEntity?> GetByIdAsync(TId id, CancellationToken token = default);
