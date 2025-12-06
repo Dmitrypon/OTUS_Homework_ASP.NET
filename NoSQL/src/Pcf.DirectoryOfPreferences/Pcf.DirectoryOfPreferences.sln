@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryOfPreferences.Application.Abstractions", "..\DirectoryOfPreferences.Application.Abstractions\DirectoryOfPreferences.Application.Abstractions.csproj", "{988FF7A6-F4C5-424F-8A1F-5C77D8973A06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryOfPreferences.Application.Implementations", "..\DirectoryOfPreferences.Application.Implementations\DirectoryOfPreferences.Application.Implementations.csproj", "{324561EB-716C-4660-B995-CC728C6140B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +25,17 @@ Global
 		{988FF7A6-F4C5-424F-8A1F-5C77D8973A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{988FF7A6-F4C5-424F-8A1F-5C77D8973A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{988FF7A6-F4C5-424F-8A1F-5C77D8973A06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324561EB-716C-4660-B995-CC728C6140B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324561EB-716C-4660-B995-CC728C6140B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324561EB-716C-4660-B995-CC728C6140B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324561EB-716C-4660-B995-CC728C6140B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{988FF7A6-F4C5-424F-8A1F-5C77D8973A06} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{324561EB-716C-4660-B995-CC728C6140B5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {505FC297-D6E2-405F-8DA1-D57FA9EBC13E}
